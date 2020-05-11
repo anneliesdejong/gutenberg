@@ -78,7 +78,6 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 28
-        arch: x86_64
         script: |
           npm ci
           npm run native test:e2e:android:local

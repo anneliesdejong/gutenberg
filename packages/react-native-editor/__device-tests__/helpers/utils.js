@@ -74,20 +74,14 @@ jasmine.getEnv().addReporter( {
 				fs.mkdirSync( ANDROID_RECORDINGS_DIR );
 			}
 
-			androidScreenRecordingProcess = childProcess.spawn(
-				'adb',
-				[
-					'shell',
-					'screenrecord',
-					'--verbose',
-					'--bit-rate',
-					'4M',
-					`/sdcard/${ fileName }`,
-				],
-				{
-					cwd: ANDROID_RECORDINGS_DIR,
-				}
-			);
+			androidScreenRecordingProcess = childProcess.spawn( 'adb', [
+				'shell',
+				'screenrecord',
+				'--verbose',
+				'--bit-rate',
+				'4M',
+				`/sdcard/${ fileName }`,
+			] );
 
 			return;
 		}
@@ -117,11 +111,11 @@ jasmine.getEnv().addReporter( {
 
 		if ( isAndroid() ) {
 			androidScreenRecordingProcess.kill( 'SIGINT' );
+			// wait for kill
+			childProcess.execSync( 'sleep 20' );
 
-			childProcess.spawnSync(
-				'adb',
-				[ 'pull', `/sdcard/${ fileNameBase }.mp4`, '.' ],
-				{ cwd: ANDROID_RECORDINGS_DIR }
+			childProcess.execSync(
+				`adb pull /sdcard/${ fileNameBase }.mp4 ${ ANDROID_RECORDINGS_DIR }`
 			);
 
 			const oldPath = `${ ANDROID_RECORDINGS_DIR }/${ fileNameBase }.mp4`;
