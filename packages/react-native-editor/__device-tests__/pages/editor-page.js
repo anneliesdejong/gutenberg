@@ -350,19 +350,38 @@ export default class EditorPage {
 
 	async sendTextToParagraphBlockAtPosition( position, text, clear ) {
 		const paragraphs = text.split( '\n' );
+		console.log(
+			'sendTextToParagraphBlockAtPosition -> paragraphs',
+			paragraphs
+		);
+
 		for ( let i = 0; i < paragraphs.length; i++ ) {
+			console.log( 'sendTextToParagraphBlockAtPosition -> i', i );
 			// Select block first
 			const block = await this.getParagraphBlockAtPosition(
 				position + i
 			);
+			console.log( 'sendTextToParagraphBlockAtPosition -> block', block );
 			await block.click();
+			console.log(
+				'sendTextToParagraphBlockAtPosition -> block.click',
+				block.click
+			);
 
 			await this.sendTextToParagraphBlock(
 				block,
 				paragraphs[ i ],
 				clear
 			);
+			console.log(
+				'sendTextToParagraphBlockAtPosition -> this.sendTextToParagraphBlock',
+				this.sendTextToParagraphBlock
+			);
 			if ( i !== paragraphs.length - 1 ) {
+				console.log(
+					'sendTextToParagraphBlockAtPosition -> paragraphs.length',
+					paragraphs.length
+				);
 				await this.sendTextToParagraphBlock( block, '\n', false );
 			}
 		}
